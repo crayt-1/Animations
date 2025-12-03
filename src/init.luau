@@ -1,24 +1,8 @@
 local Animations = {}
 Animations._animators = {}
 
-function Animations.getAnimator(anyAnimatorParent: Instance, animatorName: string?): Animator | never
-	if anyAnimatorParent:IsA("Player") then
-		if not anyAnimatorParent.Character then
-			return nil
-		end
-		return anyAnimatorParent.Character:WaitForChild("Humanoid", math.huge):WaitForChild("Animator", math.huge)
-	end
-
-	for _, descendant in anyAnimatorParent:GetDescendants() do
-		if descendant:IsA("Animator") then
-			if animatorName and descendant.Name ~= animatorName then
-				continue
-			end
-			return descendant
-		end
-	end
-
-	return nil
+function Animations.getAnimator(ancestor: Instance): Animator?
+	return ancestor:FindFirstChildWhichIsA("Animator", true)
 end
 
 function Animations.get(self: Animations, animator: Animator, animation: Animation | number | string)
